@@ -186,6 +186,15 @@ nav a {
     text-align: left;
 }
 
+.in-row {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    height: auto;
+    font-family: "Roboto Serif", Courier, monospace;
+    text-align: left;
+    align-items: center;
+}
 .bottom-bar{
     background-color:#2b2c66f6;
     height: 2vh;
