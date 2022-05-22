@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<head>
+    <title>JGDev</title>
+    <meta charset="utf-8">
+    <link rel="icon" href="images/logo.png">
+    <link rel="stylesheet" href="css/dicestyle.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/function-plot/dist/function-plot.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/dicechart.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto+Serif" rel="stylesheet">
+</head>
+<body>
+    <header> 
+        <img class="header-logo" src="images/jgdev.png">
+        <input type="checkbox" id="toggle-dropdown" class="toggle-dropdown">
+        <label for="toggle-dropdown" class="toggle-dropdown-label">
+            <span></span>
+        </label>
+        <nav>
+            <ul>
+                <li><a class="fade_button" href="index.html">Home</a></li>
+                <li><a class="fade_button" href="projects.html">Projects</a></li>
+                <li><a class="fade_button" href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="pagecontent">
+        <div class="title-content">
+            <h1 class="title-text">Dice Probability Graphing Utility</h1>
+            <div class="description-text">
+            <p>This is a tool that can be used to visualize and compare the probability distributions of rolling any number of n-sided dice.
+                Simply enter the number of dice and how many faces each die should have, and the tool will show the probability distributions for the dice rolls.
+            </p>
+            <p >The Add Graph button will create a new set of inputs that can be assigned values. Remove Graph deletes the last input in the list. Plot Graphs will take all current inputs and graph them.</p>
+            <p>In the future the tool will be able to take a target number input for each graph, and represent the total probability of rolling above that value.</p>
+            <p>The equation for exact dice probabilities can be found <a href="https://towardsdatascience.com/modelling-the-probability-distributions-of-dice-b6ecf87b24ea">here.</a></p>
+            <p>Due to difficulties with factorial scaling for large dice and sides values, any graph in which the number of dice times the number of sides is greater than 150 will use a normal probability distribution instead of the exact formula.
+                This will produce almost completely accurate graphs for graphs in which the number of dice is large, but will be less accurate the lower the number of dice.
+            </p>
+            <p>In the future edge cases like these will be checked and given more appropirate graphs.</p>
+            </div>
+        </div>
+        <div class="chartcontainer">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div id="data-inputs">
+            <div id="dataset-1" class="datarow">
+                <div class="namedatapair">
+                    <label for="num-dice-1" class="numtext">Number of dice:</label>
+                    <input type="number" class="number" id="num-dice-1" name="num-dice-1">
+                </div>
+                <div class="namedatapair">
+                    <label for="sides-dice-1" class="numtext">How many sides:</label>
+                    <input type="number" class="number" id="sides-dice-1" name="sides-dice-1">
+                </div>
+                <!--<div class="namedatapair">
+                    <label for="target-dice-1" class="numtext">Target number:</label>
+                    <input type="number" class="number" id="target-dice-1" name="target-dice-1">
+                </div>-->
+
+            </div>
+        </div>
+        <div class="mainbuttons">
+            <input type="button" class="graphbutton" value="Add Graph" id="add-graph" name="add-graph">
+            <input type="button" class="graphbutton" value="Remove Graph" id="remove-graph" name="remove-graph">
+            <input type="button" class="graphbutton" value="Plot Graphs" id="graph-data" name="graph-data">
+        </div>
+
+    </div>
+</body>

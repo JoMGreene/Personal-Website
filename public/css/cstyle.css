@@ -1,5 +1,5 @@
 body {
-    background-image: url("../images/mainbg4.jpg");
+    background-image: url("../images/mainbg.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -222,7 +222,7 @@ nav a {
     }
 }
 
-@media screen and (min-width: 800px){
+@media screen and (min-width: 800px) and (-webkit-max-device-pixel-ratio: 1){
     .toggle-dropdown-label{
         display: none;
     }

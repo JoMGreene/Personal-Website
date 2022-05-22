@@ -1,0 +1,30 @@
+{
+  "name": "personal-website",
+  "version": "1.0.0",
+  "description": "A personal website to give an introduction for myself and list my currently active projects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoMGreene/Personal-Website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoMGreene/Personal-Website/issues"
+  },
+  "homepage": "https://github.com/JoMGreene/Personal-Website#readme",
+  "devDependencies": {
+    "@types/node": "^17.0.31",
+    "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "function-plot": "^1.22.8",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-scripts": "^5.0.1"
+  }
+}
