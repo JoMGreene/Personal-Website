@@ -1,8 +1,15 @@
-const colorarray = ["#E71818", "#1857E7", "#4AE718", "#18E7BB", "#E0E718", "#8918E7", "#E718A5"];
-const colorBgArray = ["rgba(231, 24, 24, 0.5)","rgba(24, 87, 231, 0.5)","rgba(74, 231, 24, 0.5)","rgba(24, 231, 187, 0.5)","rgba(224, 231, 24, 0.5)","rgba(137, 24, 231, 0.5)","rgba(231, 24, 165, 0.5)"];
+//arrays of colors for the opaque graph lines and translucent backgrounds.
+const colorarray = ["#E71818", "#1857E7", "#e678f5", "#18E7BB", "#E0E718", "#8918E7", "#E718A5"];
+const colorBgArray = ["rgba(231, 24, 24, 0.3)","rgba(24, 87, 231, 0.3)","rgba(230, 39, 245, 0.3)","rgba(24, 231, 187, 0.3)","rgba(224, 231, 24, 0.3)","rgba(137, 24, 231, 0.3)","rgba(231, 24, 165, 0.3)"];
 
+//tracking the number of graphs present during the last graph creation. needed to splice old graphs out if the number of graphs is lower during the next createGraph call.
+let previousgraphs = 1;
+//tracks the current number of graphs so we know how many times to create a chart
+let numgraphs = 1;
 
-Chart.defaults.font.size = 8;
+let graphtype = document.getElementById("graph-type").value;
+
+//initial creation of the graph axes and settings
 let ctx = document.getElementById('myChart').getContext('2d');
 let myChart = new Chart(ctx, {
     type: 'line',
@@ -12,22 +19,12 @@ let myChart = new Chart(ctx, {
 				data: [],
 				label: 'Graph 1',
 				fill: 'start',
-				backgroundColor: 'rgba(170, 23, 23, 0.473)',
+				backgroundColor: 'rgba(170, 23, 23, 0.3)',
 				borderColor: 'red',
 				cubicInterpolationMode: 'default',
 				tension: 0.4
 			}
-			/*{
-				data: formattedLineData2,
-				fill: 'start',
-				backgroundColor: 'rgba(23, 23, 170, 0.473)',
-				borderColor: 'blue',
-				cubicInterpolationMode: 'default',
-				tension: 0.4,
-				pointHitRadius: 12
-			}*/
 		],
-		//labels: xAxisTicks,
 	},
 	options: {
 		plugins: {
@@ -57,9 +54,9 @@ let myChart = new Chart(ctx, {
 		}
 	}
 });
-Chart.defaults.font.size = 16;
+Chart.defaults.font.size = 14;
 
-
+//simple factorial calculator function
 function factorial(num) {
 	if (num == 0 || num == 1) {
 		return 1;
@@ -76,6 +73,7 @@ function factorial(num) {
 	return result;
 }
 
+//function to return the probability of a number 'total' being  the result on a dice roll of (dice)d(sides), assuming the distribution is normal.
 function stdprob(dice, sides, total) {
 	let mean = dice * (sides + 1) / 2;
 	let standdev = Math.sqrt(dice * ((sides**2) - 1) / 12);
@@ -83,6 +81,7 @@ function stdprob(dice, sides, total) {
 	return res;
 }
 
+//function to calculate the exact probability that 'total' is the result on a dice roll of (dice)d(sides). Will not work with high 'total' due to the factorials becoming too large.
 function pointProbability(dice,sides,total) {
 	let res = 0
 	for (let k = 0; k < parseInt(((total-dice)/sides) + 1); k++) {
@@ -116,130 +115,411 @@ function probabilityDistribution(dice,sides) {
 	return probDist;
 }
 
-function probabilityDistributionFormatted(dice,sides, points) {
-	const probDist = [];
-
-	let numsteps = Math.sqrt(dice*sides);
-	//checklist: if dice > 20 do stdprob for whole thing, if total - sides*k - dice > 100 do stdprob for that value, if dice * sides > 100 do fewer step evaluations
-	/*if (dice*sides > 150) {
-		for (let i = 0; i < points.length; i++) {
-			probDist[i] = {x: points[i], y: stdprob(dice,sides,Math.floor(points[i]))};
-		}
-		probDist[numsteps] = {x: i, y: stdprob(dice,sides,dice*sides)};
-		return probDist;
+function successesProbabilityDistribution(dice, sides, targetnums, successTH, doublesTH) {
+	let templateDist = [];
+	let targetprob = 0;
+	let meanTracker = 0;
+	if (dice == 0 || sides == 0 || isNaN(successTH)) {
+		return[[0], 0, 0, 0];
 	}
-	for (let i = dice; i < dice*sides + 1; i++) {
-		probDist[i] = {x: i, y: pointProbability(dice,sides,i)};
-	}*/
-	if (dice*sides > 150) {
-		for (let i = 0; i < 31; i++) {
-			probDist.push({x: Math.round((i*((dice*sides - dice) / 30) + dice)), y: stdprob(dice,sides, Math.round((i*((dice*sides - dice) / 30) + dice)))}); 
-		}
-		probDist.push({x: dice*sides, y: stdprob(dice,sides,dice*sides)});
-		return probDist;
+	if (successTH > sides) {
+		successTH = sides;
+	}
+	if (doublesTH != 0) {
+		templateDist = [(successTH - 1) / sides, (doublesTH - successTH) / sides, (sides - doublesTH) / sides];
+	}else {
+		templateDist = [(successTH - 1) / sides, (sides - successTH + 1) / sides];
 	}
 
-	for (let k = dice; k < dice*sides + 1; k++) {
-		probDist.push({x: k, y: pointProbability(dice,sides,k)})
-	}
-	/*for (let i of points) {
-		if (i < dice*sides + 1 && i > dice - 1) {
-			if (dice*sides > 150) {
-				probDist.push({x: i, y: stdprob(dice,sides,i)}) 
-			} else {
-				probDist.push({x: i, y: pointProbability(dice,sides,i)}) 
+	let probDist = templateDist.slice(0);
+
+	for (let d = 1; d < dice; d++) {
+		const probDistTemp = [];
+		probDistTemp.length = (templateDist.length + probDist.length) - 1;
+		probDistTemp.fill(0);
+		for (let i = 0; i < templateDist.length; i++) {
+			for (let k = 0; k < probDist.length; k++) {
+				let currentvalue = templateDist[i] * probDist[k];
+				probDistTemp[i + k] += currentvalue;
 			}
 		}
-	}*/
-	console.log(probDist);
+		probDist = probDistTemp.slice(0);
+	}
 
-	return probDist;
+	let formatprobDist = [];
+	for (let z = 0; z < probDist.length; z++) {
+		formatprobDist.push({x: z, y: probDist[z]});
+		meanTracker += (z * probDist[z]);
+		if (z > targetnums - 1) {
+			targetprob += probDist[z];
+		}
+	}
+	let workingStdDev = 0;
+	for (let y = 0; y < formatprobDist.length; y++) {
+		workingStdDev += formatprobDist[y].y * ((formatprobDist[y].x - meanTracker)**2);
+	}
+
+	if (targetprob > 1) {
+		targetprob = "≈1";
+	}
+	return [formatprobDist, targetprob, meanTracker, workingStdDev];
+
 }
 
 
+function probabilityDistributionFormatted(dice,sides,target) {
+	const probDist = [];	
+	let targetprob = 0;
+	let meanTracker = 0;
+	let baseArray = Array(sides).fill(1);
+	for (let i = 0; i < dice-1; i++) {
+		let resArray = [];
+		let j = 0;
+		while (j < sides - 1) {
+			resArray[j] = 0;
+			for (let k = 0; k < j+1; k++) {
+				resArray[j] += baseArray[k];
+			}
+			j++;
+		}
+		while (j > sides - 2 && j < baseArray.length) {
+			resArray[j] = 0;
+			for (let k = 0; k < sides; k++) {
+				resArray[j] += baseArray[j-k];
+			}
+			j++
+		}
+		while (j > baseArray.length - 1 && j < baseArray.length + sides - 1) {
+			resArray[j] = 0;
+			for (let k = baseArray.length + sides - j - 1; k > 0; k--) {
+				resArray[j] += baseArray[baseArray.length -k];
+			}
+			j++
+		}
+		baseArray.length = resArray.length;
+		baseArray = resArray.slice(0);
+	}
+	let formattedArray = [];
+	for (let z = 0; z < baseArray.length; z++) {
+		let pointProb = baseArray[z] / sides**dice;
+		formattedArray.push({x: dice+z, y: pointProb});
+		meanTracker += (dice+z) * pointProb;
+		if (dice+z > target - 1) {
+			targetprob += baseArray[z];
+		}		
+	}
+	let workingStdDev = 0;
+	for (let y = 0; y < formattedArray.length; y++) {
+		workingStdDev += formattedArray[y].y * ((formattedArray[y].x - meanTracker)**2);
+	}
+	workingStdDev = Math.sqrt(workingStdDev);
+	targetprob /= sides**dice;
+	return [formattedArray, targetprob, meanTracker, workingStdDev];
+	
+}
 
-function creategraph(dice, sides, points) {
+/*function probabilityDistributionFormattedTarget(dice,sides,targetnums) {	
+	const probDist = [];
+	let targetprob = 0;
+	//check if standard probability needs to be used in place of the more accurate equation, and build the dataset accordingly
+	if (dice*sides > 150 || dice > 20) {
+		for (let i = dice; i < dice*sides + 1; i++) {
+			if (i - 1 > 170) {
+				let pointnum = stdprob(dice, sides, i)
+				probDist.push({x: i, y: pointnum}); 
+				if (i > targetnums - 1) {
+					targetprob += pointnum;
+				}
+			}
+			else {
+				let pointnum = pointProbability(dice, sides, i)
+				probDist.push({x: i, y: pointnum});
+				if (i > targetnums - 1) {
+					targetprob += pointnum;
+				}
+			}
+
+		}
+		return [probDist, targetprob];
+	}
+
+	for (let k = dice; k < dice*sides + 1; k++) {
+		let pointnum = pointProbability(dice,sides,k);
+		probDist.push({x: k, y: pointnum})
+		if (k > targetnums - 1) {
+			targetprob += pointnum;
+		}
+	}
+	if (targetprob > 1) {
+		targetprob = "≈1";
+	}
+	return [probDist, targetprob];
+}*/
+
+const succeed = (ctx, value, target) => ctx.p0.parsed.x > (target - 1) ? value : undefined;
+
+//main function, calls other functions to create arrays of data, then adds them to the graph as datasets.
+function creategraph(dice, sides, targetnums) {
+	let plottedGraphs = 0;
+	let highestX = 0;
+	let targetResult = 0;
+	let meanRes = 0;
+	let stdDevRes = 0;
+	let probDistResult = [];
 	for (k = 0; k < dice.length; k++) {
+		/*if (dice[k] == 0 || sides[k] == 0 || targetnums[k] == 0) {
+			continue;
+		}*/
+		[probDistResult, targetResult, meanRes, stdDevRes]  = probabilityDistributionFormatted(dice[k], sides[k], targetnums[k]);
+		const targetnumcurrent = targetnums[k];
+		const loopval = k;
 		if (k < myChart.data.datasets.length) {
-			myChart.data.datasets[k].data = probabilityDistributionFormatted(dice[k], sides[k], points);
-			console.log(myChart.data.datasets[k].data);
+			if (probDistResult.length == 0) {
+				probDistResult = [0];
+			}
+			myChart.data.datasets[k].data = probDistResult;	
+			myChart.data.datasets[k].segment = {
+				borderColor: ctx => succeed(ctx, "rgb(74, 231, 24)", targetnumcurrent),
+				backgroundColor: ctx => succeed(ctx, "rgba(74, 231, 24, 0.3)", targetnumcurrent),
+			};
+			myChart.data.datasets[k].pointBackgroundColor = function(context) {
+				var index = context.dataIndex;
+				var value = context.dataset.data[index].x;
+				return value < targetnumcurrent ? colorBgArray[loopval % 7] : "rgb(74, 231, 24)";
+			};
+			myChart.data.datasets[k].pointBorderColor = function(context) {
+				var index = context.dataIndex;
+				var value = context.dataset.data[index].x;
+				return value < targetnumcurrent ? colorBgArray[loopval % 7] : "rgb(74, 231, 24)";
+			};
+		} else {	
+			myChart.data.datasets.push({
+				data: probDistResult,
+				fill: 'start',
+				label: 'Graph ' + (k + 1),
+				pointBackgroundColor: function(context) {
+					var index = context.dataIndex;
+					var value = context.dataset.data[index].x;
+					return value < targetnumcurrent ? colorBgArray[loopval % 7] : "rgb(74, 231, 24)";
+				},
+				pointBorderColor: function(context) {
+					var index = context.dataIndex;
+					var value = context.dataset.data[index].x;
+					return value < targetnumcurrent ? colorBgArray[loopval % 7] : "rgb(74, 231, 24)";
+				},
+				backgroundColor: colorBgArray[k % 7],
+				borderColor: colorarray[k % 7],
+				cubicInterpolationMode: 'default',
+				tension: 0.4,
+				segment: {
+					borderColor: ctx => succeed(ctx, "rgb(74, 231, 24)", targetnumcurrent),
+					backgroundColor: ctx => succeed(ctx, "rgba(74, 231, 24, 0.3)", targetnumcurrent),
+				}
+			})
+		}
+		if (probDistResult.length > 1) {
+			document.getElementById('data-analyze-' + (k+1)).style.display = "block";
+			if (targetnumcurrent == Infinity) {
+				document.getElementById('data-analyze-' + (k+1)).innerHTML = "Graph " + (k+1) + " has a mean of " + parseFloat(meanRes.toFixed(4)) + " and a standard deviation of " + stdDevRes.toFixed(4) + ".";
+			} else {
+			document.getElementById('data-analyze-' + (k+1)).innerHTML = "Graph " + (k+1) + " has a mean of " + parseFloat(meanRes.toFixed(4)) + " and a standard deviation of " + stdDevRes.toFixed(4) + ".<br> The probability of getting a total value of at least " + targetnums[k] + " is " + parseFloat(targetResult.toFixed(4));
+			}
+		} else {
+			document.getElementById('data-analyze-' + (k+1)).style.display = "none";
+			//document.getElementById('data-anaylze-' + (k+1)).innerHTML = "";
+		}
+
+		if (dice[k] * sides[k] > highestX) {
+			highestX = dice[k] * sides[k];
+		}
+	}
+	myChart.options.scales.x.min = Math.min(...dice);
+	myChart.options.scales.x.max = highestX;
+	myChart.options.scales.x.ticks.stepSize = Math.floor((highestX - myChart.options.scales.x.min) / 10);
+
+	if (previousgraphs > numgraphs) {
+		myChart.data.datasets.splice(dice.length, previousgraphs - dice.length);	
+	}
+	myChart.update();
+	previousgraphs = dice.length;
+}
+
+
+function creategraphsuccesses(dice, sides, successTHs, targetnums) {
+	let targetResult = 0
+	let probDistResult = [];
+	let meanRes = 0;
+	let stdDevRes = 0;
+	for (k = 0; k < dice.length; k++) {
+
+		[probDistResult, targetResult, meanRes, stdDevRes]  = successesProbabilityDistribution(dice[k], sides[k], targetnums[k], successTHs[k], 0);
+		const targetnumcurrent = targetnums[k];
+		const loopval = k;
+		if (k < myChart.data.datasets.length) {
+			myChart.data.datasets[k].data = probDistResult;
+			myChart.data.datasets[k].segment = {
+				borderColor: ctx => succeed(ctx, "rgb(74, 231, 24)", targetnumcurrent),
+				backgroundColor: ctx => succeed(ctx, "rgba(74, 231, 24, 0.5)", targetnumcurrent),
+			};
+			myChart.data.datasets[k].pointBackgroundColor = function(context) {
+				var index = context.dataIndex;
+				var value = context.dataset.data[index].x;
+				return value < targetnumcurrent ? colorBgArray[loopval % 7] : "rgb(74, 231, 24)";
+			};
+			myChart.data.datasets[k].pointBorderColor = function(context) {
+				var index = context.dataIndex;
+				var value = context.dataset.data[index].x;
+				return value < targetnumcurrent ? colorBgArray[loopval % 7] : "rgb(74, 231, 24)";
+			};
 			
 		} else {	
 			myChart.data.datasets.push({
-				data: probabilityDistributionFormatted(dice[k], sides[k], points),
+				data: probDistResult,
 				fill: 'start',
 				label: 'Graph ' + (k + 1),
 				backgroundColor: colorBgArray[k % 7],
 				borderColor: colorarray[k % 7],
 				cubicInterpolationMode: 'default',
-				tension: 0.4
+				tension: 0.4,
+				pointBackgroundColor: function(context) {
+					var index = context.dataIndex;
+					var value = context.dataset.data[index].x;
+					return value < targetnumcurrent ? colorBgArray[loopval % 7] : "rgb(74, 231, 24)";
+				},
+				pointBorderColor: function(context) {
+					var index = context.dataIndex;
+					var value = context.dataset.data[index].x;
+					return value < targetnumcurrent ? colorBgArray[loopval % 7] : "rgb(74, 231, 24)";
+				},
+				segment: {
+					borderColor: ctx => succeed(ctx, "rgb(74, 231, 24)", targetnumcurrent),
+					backgroundColor: ctx => succeed(ctx, "rgba(74, 231, 24, 0.5)", targetnumcurrent),
+				}
 			})
 		}
-		myChart.options.scales.x.min = points[0] - 1;
-		myChart.options.scales.x.max = points[points.length - 1] + 1;
-		myChart.options.scales.x.ticks.stepSize = Math.floor(points[points.length - 1] / 10);
+		if (probDistResult.length > 1) {
+			document.getElementById('data-analyze-' + (k+1)).style.display = "block";
+			if (targetnumcurrent == Infinity) {
+				document.getElementById('data-analyze-' + (k+1)).innerHTML = "Graph " + (k+1) + " has a mean of " + parseFloat(meanRes.toFixed(4)) + " and a standard deviation of " + stdDevRes.toFixed(4) + ".";
+			} else {
+			document.getElementById('data-analyze-' + (k+1)).innerHTML = "Graph " + (k+1) + " has a mean of " + parseFloat(meanRes.toFixed(4)) + " and a standard deviation of " + stdDevRes.toFixed(4) + ".<br> The probability of getting at least " + targetnums[k] + " successes is " + parseFloat(targetResult.toFixed(4));
+			}
+		} else {
+			document.getElementById('data-analyze-' + (k+1)).style.display = "none";
+			//document.getElementById('data-anaylze-' + (k+1)).innerHTML = "";
+		}
 	}
+	myChart.options.scales.x.min = 0;
+	myChart.options.scales.x.max = Math.max(...dice) + 1;
+	myChart.options.scales.x.ticks.stepSize = 1;
+
+	if (previousgraphs > numgraphs) {
+		myChart.data.datasets.splice(dice.length, previousgraphs - dice.length);	
+	}
+
 	myChart.update();
-	console.log(myChart.data.datasets.length);
+	previousgraphs = dice.length;
 }
 
-let numgraphs = 1;
 
+//obtains dice and sides from all inputs and calls creategraph function
 document.getElementById("graph-data").onclick = function(){
 	let diceNumArray = [];
 	let sidesArray = [];
-	let renderpoints = new Map()
-	let renderpointarray = [];
+	let successTHArray = [];
+	let targetnumArray = [];
+
 	for(j = 1; j < numgraphs + 1; j++) {
+		if (document.getElementById("num-dice-"+j).value == '' || document.getElementById("sides-dice-"+j).value == '') {
+			diceNumArray[j-1] = 0;
+			sidesArray[j-1] = 0;
+			successTHArray[j-1] = 0;
+			targetnumArray[j-1] = 0;
+		} else {
 		diceNumArray[j-1] = parseInt(document.getElementById("num-dice-"+j).value);
 		sidesArray[j-1] = parseInt(document.getElementById("sides-dice-"+j).value);
-	}
-	for (k = 0; k < diceNumArray.length; k++) {
-		if (diceNumArray[k] * sidesArray[k] < 150) {
-			for (i = diceNumArray[k]; i < diceNumArray[k] * sidesArray[k] + 1; i++) {
-				if (!(renderpoints.has(i))) {
-					renderpoints.set(i, 1);
-				}
-			}
-		} else {
-			let numsteps = Math.sqrt(diceNumArray[k]*sidesArray[k]);
-			for (let z = 0; z < Math.floor(numsteps); z++) {
-				if (!(renderpoints.has(Math.floor(z*numsteps + diceNumArray[k])))) {
-					renderpoints.set(Math.floor(z*numsteps + diceNumArray[k]), 1);
-				}
-			}
-			renderpoints.set(diceNumArray[k]*sidesArray[k], 1)
+		targetnumArray[j-1] = parseInt(document.getElementById("target-dice-"+j).value);
+		successTHArray[j-1] = parseInt(document.getElementById("success-dice-"+j).value);
+		}
+		if (document.getElementById("target-dice-"+j).value == '') {
+			targetnumArray[j-1] = Infinity;
 		}
 	}
-	for (const renderkey of renderpoints.keys()) {
-		renderpointarray.push(renderkey);
+	if (graphtype == "total") {
+		creategraph(diceNumArray, sidesArray, targetnumArray);
 	}
-	console.log(renderpointarray);
-	renderpointarray.sort(function(a, b){return a - b});
-	creategraph(diceNumArray, sidesArray, renderpointarray);
-	console.log(myChart.data.datasets);
+	else if (graphtype == "successes") {
+		creategraphsuccesses(diceNumArray, sidesArray, successTHArray, targetnumArray);
+	}
 }
 
+document.getElementById("graph-type").addEventListener('change', (event) => {
+	if (event.target.value == 'successes' ) {
+		for (let i = 1; i < numgraphs + 1; i++) {
+			document.getElementById('success-section-' + i).style.display = "flex";
+		}
+		graphtype = "successes";
+	}
+	else if (event.target.value == 'total') {
+		for (let i = 1; i < numgraphs + 1; i++) {
+			document.getElementById('success-section-' + i).style.display = "none";
+		}
+		graphtype = "total";
+	}
+});
 
 document.getElementById("add-graph").onclick = function(){
 	numgraphs += 1;
-	let middiv = document.createElement('div');
-	let subdiv = document.createElement('input');
 	let newgraph = document.createElement('div');
-	let subdivlabel = document.createElement('label');
 	let datadiv = document.getElementById("data-inputs");
+	let looparrayitems = ["num", "sides", "success", "target"];
+	let loopinnerHTML = ["Number of dice:", "How Many Sides:", "Success Threshold:", "Target Number:"];
 
-	middiv.classList.add("namedatapair");
+	//middiv.classList.add("namedatapair");
 
 	newgraph.id = "dataset-" + numgraphs;
 	newgraph.classList.add("datarow");
 
-	subdiv.type = "number";
-	subdiv.classList.add("number");
-	subdiv.id = "num-dice-" + numgraphs;
-	subdiv.name = "num-dice-" + numgraphs;
+	for (let i = 0; i < 4; i++) {
+		let middiv = document.createElement('div');
+		middiv.classList.add("namedatapair");
+		if (i == 2) {
+			middiv.classList.add("toggle-data");
+			middiv.id = "success-section-" + numgraphs;
+			if (graphtype == "successes") {
+				middiv.style.display = "flex";
+			} 
+		}
 
-	subdivlabel.setAttribute("for", subdiv.id);
+		let numinput = document.createElement('input');
+		numinput.type = "number";
+		numinput.classList.add("number");
+		numinput.id = looparrayitems[i] + "-dice-" + numgraphs;
+		numinput.name = looparrayitems[i] + "-dice-" + numgraphs;
+
+		let subdivlabel = document.createElement('label');
+		subdivlabel.setAttribute("for", numinput.id);
+		subdivlabel.classList.add("numtext");
+		subdivlabel.innerHTML = loopinnerHTML[i];
+
+		middiv.appendChild(subdivlabel);
+		middiv.appendChild(numinput);
+
+		newgraph.appendChild(middiv);
+	}
+
+	let newAnalytics = document.createElement('p');
+	newAnalytics.classList.add('analysis-toggle');
+	newAnalytics.id = "data-analyze-" + numgraphs; 
+
+	let anaDiv = document.getElementById("data-analyze");
+	anaDiv.appendChild(newAnalytics);
+	/*numinput.type = "number";
+	numinput.classList.add("number");
+	numinput.id = "num-dice-" + numgraphs;
+	numinput.name = "num-dice-" + numgraphs;
+
+	subdivlabel.setAttribute("for", numinput.id);
 	subdivlabel.classList.add("numtext");
 	subdivlabel.innerHTML = "Number of dice:";
 
@@ -249,15 +529,15 @@ document.getElementById("add-graph").onclick = function(){
 	newgraph.appendChild(middiv);
 
 	middiv = document.createElement('div');
-	subdiv = document.createElement('input');
+	numinput = document.createElement('input');
 	subdivlabel = document.createElement('label');
 
 	middiv.classList.add("namedatapair");
 
-	subdiv.type = "number";
-	subdiv.classList.add("number");
-	subdiv.id = "sides-dice-" + numgraphs;
-	subdiv.name = "sides-dice-" + numgraphs;
+	numinput.type = "number";
+	numinput.classList.add("number");
+	numinput.id = "sides-dice-" + numgraphs;
+	numinput.name = "sides-dice-" + numgraphs;
 
 	subdivlabel.setAttribute("for", subdiv.id);
 	subdivlabel.classList.add("numtext");
@@ -268,7 +548,7 @@ document.getElementById("add-graph").onclick = function(){
 
 	newgraph.appendChild(middiv);
 
-	/*middiv = document.createElement('div');
+	---middiv = document.createElement('div');
 	subdiv = document.createElement('input');
 	subdivlabel = document.createElement('label');
 
@@ -281,25 +561,19 @@ document.getElementById("add-graph").onclick = function(){
 
 	subdivlabel.setAttribute("for", subdiv.id);
 	subdivlabel.classList.add("numtext");
-	subdivlabel.innerHTML = "Target number:";*/
+	subdivlabel.innerHTML = "Target number:";---
 
 	middiv.appendChild(subdivlabel);
 	middiv.appendChild(subdiv);
 
-	newgraph.appendChild(middiv);
+	newgraph.appendChild(middiv);*/
 
 	datadiv.appendChild(newgraph);
+
 }
 
 document.getElementById("remove-graph").onclick = function() {
 	document.getElementById("dataset-" + numgraphs).remove();
-	numgraph -= 1;
+	document.getElementById("data-analyze-" + numgraphs).remove()
+	numgraphs -= 1;
 }
-
-
-
-console.log(myChart.data.datasets[0]);
-
-
-
-//creating x - axis

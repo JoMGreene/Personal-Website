@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<head>
+    <title>JGDev</title>
+    <link rel="icon" href="images/logo.png">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/scripts2.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto+Serif" rel="stylesheet">
+</head>
+<body>
+    <header> 
+        <img class="header-logo" src="images/jgdev.png">
+        <input type="checkbox" id="toggle-dropdown" class="toggle-dropdown">
+        <label for="toggle-dropdown" class="toggle-dropdown-label">
+            <span></span>
+        </label>
+        <nav>
+            <ul>
+                <li><a class="fade_button" href="index.html">Home</a></li>
+                <li><a class="fade_button" href="projects.html">Projects</a></li>
+                <li><a class="fade_button" href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="mainrow row0">
+        <p class="centertext">Joseph Greene,<br>Developer</p>
+    </div>
+    <div class="maincontent">
+        <div class="mainrow row1 js-scroll">
+            <div class="scroll-offscreen textside fade-anim js-scroll ">
+                <h2 class="rowtexthead odd-row">About Me</h2>
+                <p class="rowtext odd-row">My name is Joseph Greene. I am a developer interested in web development and UX research/design. 
+                    I graduated from the University of California, Davis in June of 2021 with a Bachelor of Science Degree in Psychology, and a minor in Computer Science.</p>
+            </div>
+            <div class="scroll-offscreen rowpic fade-anim js-scroll">
+                <img class="rowpicture" src="images/degree photo2.jpg">
+            </div>
+        </div>
+        <div class="mainrow row2 js-scroll">
+            <div class="scroll-offscreen rowpic fade-anim js-scroll">
+                <img class="rowpicture" src="images/psychdev.png">
+            </div>
+            <div class="scroll-offscreen textside fade-anim js-scroll">
+                <h2 class="rowtexthead even-row">Web Dev and UX</h2>
+                <p class="rowtext even-row">Being a developer is always something I've considered as a possible career path, and I think that while my degree is in psychology rather than CS, many of the things I've learned about psychology are applicable to being a developer. 
+                    Whether its communicating with clients in a way that's meaningful for both parties or designing products in a way that makes people want to use them, 
+                    I think my psychology background gives me a good understanding of how to approach situations and problems. </p>
+            </div>
+        </div>
+        <div class="mainrow row3 js-scroll">
+            <div class="scroll-offscreen textside fade-anim js-scroll">
+                <h2 class="rowtexthead">What Im Learning</h2>
+                <p class="rowtext">I began learning HTML, CSS, and javascript in late 2021 when I designed a custom character sheet for the Roll20 VTT. 
+                    I've also been learning python, and have been using PyQt to start working on a desktop application.</p>
+            </div>
+            <div class="scroll-offscreen rowpic fade-anim js-scroll">
+                <img class="rowpicture" src="images/pyqt2.jpg">
+            </div>
+        </div>
+        <div class="mainrow row4 js-scroll">
+            <div class="scroll-offscreen rowpic fade-anim js-scroll">
+                <img class="rowpicture" src="images/dice.jpg">
+            </div>
+            <div class="scroll-offscreen textside fade-anim js-scroll">
+                <h2 class="rowtexthead even-row">Other Projects</h2>
+                <p class="rowtext even-row">Outside of software dev, im currently working on a Tabletop RPG game system. It's in the early stages of development, but I plan to release a playtest version in late 2022. I also intend to create tools to support the game, such as a stand-alone character creator and Roll20 VTT character sheet.</p>
+            </div>
+        </div>
+        <div class="bottom-bar">
+
+        </div>
+    </div>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyBS5GpAyEE6LlJZwZeePGKUwfsrY4UJgJo",
+          authDomain: "jgreenedev-web.firebaseapp.com",
+          projectId: "jgreenedev-web",
+          storageBucket: "jgreenedev-web.appspot.com",
+          messagingSenderId: "501758675327",
+          appId: "1:501758675327:web:5153f273809790ebb5724a",
+          measurementId: "G-DFRFZP9JR1"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
+</body>

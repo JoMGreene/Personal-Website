@@ -34,32 +34,42 @@
                 Simply enter the number of dice and how many faces each die should have, and the tool will show the probability distributions for the dice rolls.
             </p>
             <p >The Add Graph button will create a new set of inputs that can be assigned values. Remove Graph deletes the last input in the list. Plot Graphs will take all current inputs and graph them.</p>
-            <p>In the future the tool will be able to take a target number input for each graph, and represent the total probability of rolling above that value.</p>
-            <p>The equation for exact dice probabilities can be found <a href="https://towardsdatascience.com/modelling-the-probability-distributions-of-dice-b6ecf87b24ea">here.</a></p>
-            <p>Due to difficulties with factorial scaling for large dice and sides values, any graph in which the number of dice times the number of sides is greater than 150 will use a normal probability distribution instead of the exact formula.
-                This will produce almost completely accurate graphs for graphs in which the number of dice is large, but will be less accurate the lower the number of dice.
-            </p>
-            <p>In the future edge cases like these will be checked and given more appropirate graphs.</p>
+            <p>The Target Number option allows for an optional target total to meet/beat. When a Target Number is defined, the portion of the graph that succeeds against the target will be highlighted green, and the total probability of meeting or exceeding that value will be recorded below the graph.</p>
+            <p>In successes mode, the Success Threshold is a mandatory field that defines the value that any individual die must be at least equal to, for that die to count as a success.</p>
             </div>
         </div>
         <div class="chartcontainer">
             <canvas id="myChart"></canvas>
         </div>
-        <div id="data-inputs">
-            <div id="dataset-1" class="datarow">
-                <div class="namedatapair">
-                    <label for="num-dice-1" class="numtext">Number of dice:</label>
-                    <input type="number" class="number" id="num-dice-1" name="num-dice-1">
-                </div>
-                <div class="namedatapair">
-                    <label for="sides-dice-1" class="numtext">How many sides:</label>
-                    <input type="number" class="number" id="sides-dice-1" name="sides-dice-1">
-                </div>
-                <!--<div class="namedatapair">
-                    <label for="target-dice-1" class="numtext">Target number:</label>
-                    <input type="number" class="number" id="target-dice-1" name="target-dice-1">
-                </div>-->
+        <div class="chart-analytics" id="data-analyze">
+            <p class="analysis-toggle"id="data-analyze-1"></p>
+        </div>
+        <div class="graph-options">
+            <select name="graph-type" id="graph-type">
+                <option value="total">Total</option>
+                <option value="successes">Successes</option>
+            </select>
+            <div id="data-inputs">
+                <div id="dataset-1" class="datarow">
+                    <div class="namedatapair">
+                        <label for="num-dice-1" class="numtext">Number of dice:</label>
+                        <input type="number" class="number" id="num-dice-1" name="num-dice-1">
+                    </div>
+                    <div class="namedatapair">
+                        <label for="sides-dice-1" class="numtext">How many sides:</label>
+                        <input type="number" class="number" id="sides-dice-1" name="sides-dice-1">
+                    </div>
+                    <div class="namedatapair toggle-data" id="success-section-1">
+                        <label for="success-dice-1" class="numtext">Success Threshold:</label>
+                        <input type="number" class="number" id="success-dice-1" name="success-dice-1">
+                    </div>
+                    <div class="namedatapair">
+                        <label for="target-dice-1" class="numtext">Target Number:</label>
+                        <input type="number" class="number" id="target-dice-1" name="target-dice-1">
+                    </div>
+                   
 
+                </div>
             </div>
         </div>
         <div class="mainbuttons">
