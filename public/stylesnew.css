@@ -11,6 +11,14 @@ body {
     color:aliceblue;
 }
 
+a:visited {
+    color:#7d42c0;
+}
+
+nav a:visited {
+    color: aliceblue;
+}
+
 img, .mainrow {
     box-shadow: 0px 4px 15px 0 rgba(0, 0, 0, 0.3), 0 15px 20px 0 rgba(0, 0, 0, 0.25);
 }
@@ -131,6 +139,7 @@ nav a {
 
 .maincontent {
     background-color: #494555;
+    border: 5px groove rgb(58, 37, 66);
     margin-inline: auto;
     padding: 3%;
     display: grid;
@@ -188,13 +197,17 @@ nav a {
 }
 
 .rowtexthead {
-    margin-left: 10vw;
     font-size: 2.2rem;
 }
 
 .infotext {
-    font-size: 1.2rem;
-    line-height: 2rem;
+    font-size: 1rem;
+    display: flex;
+    height: 80%;
+    margin-block: 5%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     white-space: nowrap;
 }
 
@@ -212,13 +225,27 @@ nav a {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height: 100%;
+    height: 90%;
 }
 .headpic {
     border: 3px ridge #494555;
     border-radius: 50%;
-    height: 13vh;
+    height: 10vh;
     align-self: center;
+}
+
+.grid-text {
+    height: 100%;
+}
+
+.proj-text {
+    text-align: center;
+}
+
+.topleftgrid{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -310,6 +337,8 @@ nav a {
         background-color: #37343f;
         flex-direction: row;
         border: 3px ridge #322f3a;
+        width: 80%;
+        margin-left: 10%;
     }
     .headpic {
         margin-inline: 2.5%;
@@ -317,11 +346,27 @@ nav a {
     .rowtext {
         font-size: 20px;
     }
+    .rowtexthead {
+        text-align: center;
+    }
 
+    .toprightgrid {
+        background-image: radial-gradient(black 0%, #494555 70%);
+        background-size: 100% 8px;
+        background-repeat: no-repeat;
+        background-position: center 100%;
+    }
+    .left-grid {
+        background-image: radial-gradient(black 0%, #494555 70%);
+        background-size: 8px 100%;
+        background-repeat: no-repeat;
+        background-position: 100% center;
+    }
     .topleftgrid {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        background-image: radial-gradient(black 0%, #494555 70%), radial-gradient(black 0%, #494555 70%);
+        background-size: 70% 8px, 8px 100%;
+        background-repeat: no-repeat, no-repeat;
+        background-position: center 100%, 100% center;
     }
     .grid-unit {
         box-sizing: border-box;
