@@ -242,6 +242,16 @@ nav a {
     transition: none !important;
 }
 
+.fade-in {
+    position: relative;
+    animation: fade-in-anim 1s forwards;
+}
+
+.fade-out {
+    position: relative;
+    animation: fade-out-anim 1s forwards;
+}
+
 @media screen and (min-width: 800px) and (-webkit-max-device-pixel-ratio: 1){
 	.toggle-dropdown-label{
         display: none;
@@ -332,4 +342,14 @@ nav a {
         width: 50vw;
         margin-left: 5%;
     }
+}
+
+@keyframes fade-in-anim {
+    0% {left: 30%; opacity: 0;}
+    100% {left: 0%; opacity: 1;}
+}
+
+@keyframes fade-out-anim {
+    0% {left: 0%; opacity: 1;}
+    100% {left: -30%; opacity: 0;}
 }
