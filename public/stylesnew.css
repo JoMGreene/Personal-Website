@@ -138,14 +138,14 @@ nav a {
 }
 
 .maincontent {
-    background-color: #494555;
+    background-color: #211e29;
     border: 5px groove rgb(58, 37, 66);
     margin-inline: auto;
-    padding: 3%;
+    padding-block: 3%;
     display: grid;
     grid-template-columns: 7fr 3fr;
 	grid-template-rows: 17vh auto;
-    width: 90%;
+    width: 100vw;
     height: auto;
     align-items: center;
     font-size: 1.4rem;
@@ -230,7 +230,7 @@ nav a {
 .headpic {
     border: 3px ridge #494555;
     border-radius: 50%;
-    height: 10vh;
+    height: 11vh;
     align-self: center;
 }
 
@@ -328,7 +328,6 @@ nav a {
         line-height: 100%;
     }
     .maincontent{
-        height: 627;
         font-size: 1.6rem;
         grid-template-columns: 7fr minmax(440px, 3fr);
     }
@@ -351,22 +350,16 @@ nav a {
     }
 
     .toprightgrid {
-        background-image: radial-gradient(black 0%, #494555 70%);
+        background-image: radial-gradient(black 0%, #211e29 70%);
         background-size: 100% 8px;
         background-repeat: no-repeat;
         background-position: center 100%;
     }
-    .left-grid {
-        background-image: radial-gradient(black 0%, #494555 70%);
-        background-size: 8px 100%;
-        background-repeat: no-repeat;
-        background-position: 100% center;
-    }
     .topleftgrid {
-        background-image: radial-gradient(black 0%, #494555 70%), radial-gradient(black 0%, #494555 70%);
-        background-size: 70% 8px, 8px 100%;
+        background-image: radial-gradient(black 0%, #211e29 70%);
+        background-size: 70% 8px;
         background-repeat: no-repeat, no-repeat;
-        background-position: center 100%, 100% center;
+        background-position: center 100%;
     }
     .grid-unit {
         box-sizing: border-box;

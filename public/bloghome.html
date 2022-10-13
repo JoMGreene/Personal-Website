@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<meta charset="UTF-8">
+	<title>JGDev</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" href="css/bloghome.css">
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto+Serif" rel="stylesheet">
+	<script src="js/blog.js"></script>
+	
+	<body>
+		<header> 
+			<a class="header-logo" href="https://jgreene.dev">
+				<img src="images/jgdev.png">
+			</a>
+			<input type="checkbox" id="toggle-dropdown" class="toggle-dropdown">
+			<label for="toggle-dropdown" class="toggle-dropdown-label">
+				<span></span>
+			</label>
+			<nav>
+				<ul>
+					<li><a class="fade_button" href="index.html">Home</a></li>
+					<li><a class="fade_button" href="projects.html">Projects</a></li>
+					<li><a class="fade_button" href="contact.html">Contact</a></li>
+				</ul>
+			</nav>
+		</header>
+		<div class="pagecontent">
+			<h1 class="title">JGDev Blog</h1>
+			<div id="blog-card">
+				<div class="blog-top-row">
+					<h1 class="section-header">Posts:</h1>
+					<div class="sort-sec">
+						<label for="sorting-blog">Sort By:</label>
+						<select name="sorting-blog" id="sorting-blog" class="sort-posts" onchange="sortArticles(this.value)">
+							<option value="new">New</option>
+							<option value="old">Old</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="filter-area"></div>
+		</div>
+	</body>
+
+
+</html>
+
+
+

@@ -1,35 +1,40 @@
 <!DOCTYPE html>
-<head>
-    <title>Contact Me</title>
-    <link rel="icon" href="images/logo.png">
-    <link rel="stylesheet" href="css/cstyle.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="js/scripts.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto+Serif&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header> 
-        <img class="header-logo" src="images/jgdev.png">
-        <input type="checkbox" id="toggle-dropdown" class="toggle-dropdown">
-        <label for="toggle-dropdown" class="toggle-dropdown-label">
-            <span></span>
-        </label>
-        <nav>
-            <ul>
-                <li><a class="fade_button link1" href="index.html">Home</a></li>
-                <li><a class="fade_button link2" href="projects.html">Projects</a></li>
-                <li><a class="fade_button link3" href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="maincontent">
-        
-        <div class="mainrow">
-            <h1 class="tiletitle">Contact Me</h1>
-            <p class="tiletext">Gmail: jomgreene@ucdavis.edu</p>
-            <div class="in-row">
-                <p>Linkedin: </p><a href="https://www.linkedin.com/in/joseph-greene-253712215/"> https://www.linkedin.com/in/joseph-greene-253712215/</a>
+<html lang="en">
+
+	<meta charset="UTF-8">
+	<title>JGDev</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" href="css/cstyle.css">
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto+Serif" rel="stylesheet">
+	<script src=""></script>
+
+	<body>
+		<div class="leftside">
+            <div class="texttitle">
+			    <a href="https://jgreene.dev">
+				    <img src="./images/logoblack.png">
+                </a>
             </div>
-        </div>
-    </div>
-</body>
+			<div class="inlinks">
+				<div class="sitetext">JoMGreene@ucdavis.edu</div>
+				<a href="https://www.linkedin.com/in/joseph-greene-253712215/" class="sitelinks">Linkedin</a>
+                <a href="https://twitter.com/JosephG29455714" class="sitelinks">Twitter</a>
+				<a href="https://github.com/JoMGreene?tab=repositories" class="sitelinks">Github</a>
+			</div>
+			<div class="myinfo">
+				<img class="headpic" src="./images/headphoto.png">
+				<div class="myinfotext">
+					<p>Joseph Greene</p>
+					<p>UX Researcher</p>
+				</div>
+			</div>
+			<div class="outlinks">
+				<button class="linkedin-button outlink-button" onclick="location.href='https://www.linkedin.com/in/joseph-greene-253712215/'" type="button"></button>
+				<button class="twitter-button outlink-button" onclick="location.href='https://twitter.com/JosephG29455714'" type="button"></button>
+				<button class="github-button outlink-button" onclick="location.href='https://github.com/JoMGreene?tab=repositories'" type="button"></button>
+			</div>
+		</div>
+		<div class="rightside">
+		</div>
+	</body>
+</html>

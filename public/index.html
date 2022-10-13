@@ -1,77 +1,40 @@
 <!DOCTYPE html>
-<head>
-    <title>JGDev</title>
-    <link rel="icon" href="images/logo.png">
-    <link rel="stylesheet" href="stylesnew.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="js/scripts2.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto+Serif" rel="stylesheet">
-</head>
-<body>
-    <header> 
-        <img class="header-logo" src="images/jgdev.png">
-        <input type="checkbox" id="toggle-dropdown" class="toggle-dropdown">
-        <label for="toggle-dropdown" class="toggle-dropdown-label">
-            <span></span>
-        </label>
-        <nav>
-            <ul>
-                <li><a class="fade_button" href="index.html">Home</a></li>
-                <li><a class="fade_button" href="projects.html">Projects</a></li>
-                <li><a class="fade_button" href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="mainrow row0">
-        <p class="centertext">Joseph Greene,<br>Developer</p>
-    </div>
-    <div class="maincontent">
-            <h2 class="topleftgrid grid-unit left-grid">Welcome to JGDev</h2>
-            <div class="toprightgrid grid-unit">
-                <div class="headpic-cont ">
-                    <img class="headpic" src="images/headphoto.png">
-                    <div class="infotext">
-                        <p>Joseph Greene</p>
-                        <p>Web Dev/Software Engineer</p>
-                        <p>jomgreene@ucdavis.edu</p>
-                    </div>
-                </div>
+<html lang="en">
+
+	<meta charset="UTF-8">
+	<title>JGDev</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" href="styles3.css">
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto+Serif" rel="stylesheet">
+	<script src=""></script>
+
+	<body>
+		<div class="leftside">
+			<div class="texttitle">
+			    <a href="https://jgreene.dev">
+				    <img src="./images/logoblack.png">
+                </a>
             </div>
-			<div class="grid-unit grid-text left-grid">
-                <h2 class="rowtexthead">About Me</h2>
-                <p class="rowtext">My name is Joseph Greene. I am a recent graduate interested in web development and software engineering. 
-                    I graduated from the University of California, Davis in June of 2021 with a Bachelor of Science Degree in Psychology, and a minor in Computer Science.</p>
-                <p class="rowtext"> Since then, I have been exploring different options of where to start my career, as well as working on improving my programming skills and knowledge. 
-                    During this time, I have come to realize that both front and back-end development have a lot of interesting aspects that I am enjoying being able to explore, 
-                    so I am seeking job opportunities that allow me to keep learning and continually integrating knowledge into my work.</p>
+			<div class="inlinks">
+				<a href="./index.html" class="sitelinks">Home</a>
+				<a href="./projects.html" class="sitelinks">Projects</a>
+				<a href="./contact.html" class="sitelinks">Contact</a>
+				<a href="./bloghome.html" class="sitelinks">Blog</a>
 			</div>
-            <div class="grid-unit grid-text"> 
-                <h2 class="rowtexthead">Projects</h2>
-                <p class="proj-text">Personal Website: <a href="https://github.com/JoMGreene/Personal-Website">Github</a> <a href="index.html">Homepage</a></p>
-                <p class="proj-text">Dice Grapher: <a href="dice.html">Webpage</a></p>
-            </div>
-    </div>
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-          apiKey: "AIzaSyBS5GpAyEE6LlJZwZeePGKUwfsrY4UJgJo",
-          authDomain: "jgreenedev-web.firebaseapp.com",
-          projectId: "jgreenedev-web",
-          storageBucket: "jgreenedev-web.appspot.com",
-          messagingSenderId: "501758675327",
-          appId: "1:501758675327:web:5153f273809790ebb5724a",
-          measurementId: "G-DFRFZP9JR1"
-        };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-      </script>
-</body>
+			<div class="myinfo">
+				<img class="headpic" src="./images/headphoto.png">
+				<div class="myinfotext">
+					<p>Joseph Greene</p>
+					<p>Web Dev & UX</p>
+				</div>
+			</div>
+			<div class="outlinks">
+				<button class="linkedin-button outlink-button" onclick="location.href='https://www.linkedin.com/in/joseph-greene-253712215/'" type="button"></button>
+				<button class="twitter-button outlink-button" onclick="location.href='https://twitter.com/JosephG29455714'" type="button"></button>
+				<button class="github-button outlink-button" onclick="location.href='https://github.com/JoMGreene?tab=repositories'" type="button"></button>
+			</div>
+		</div>
+		<div class="rightside">
+		</div>
+	</body>
+</html>

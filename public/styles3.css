@@ -10,11 +10,11 @@ body {
 	min-width: 300px;
 	height: 100vh;
 	display: grid;
-	grid-template-rows: 15% 40% 23% 17% 5%;
+	grid-template-rows: 15% 30% 33% 17% 5%;
 }
 
 .rightside {
-	background-image: url("../images/bg2.webp");
+	background-image: url("./images/bg2.webp");
 	background-size: cover;
 	width: 80vw;
 	height: 100vh;
@@ -46,12 +46,6 @@ body {
     color:rgb(7, 7, 7);
     border-color: transparent;
     align-self: center;
-}
-
-.sitetext {
-    font-size: 1.3rem;
-    text-transform: uppercase;
-    font-family: "Roboto Serif", Courier, monospace;
 }
 
 .sitelinks:hover {
@@ -111,15 +105,15 @@ body {
 
 
 .linkedin-button {
-	background-image: url("../images/linkedin.webp");
+	background-image: url("./images/linkedin.webp");
 }
 
 .twitter-button {
-	background-image: url("../images/twitter.webp");
+	background-image: url("./images/twitter.webp");
 }
 
 .github-button {
-	background-image: url("../images/github.png");
+	background-image: url("./images/github.png");
 }
 
 @media screen and (max-width: 800px) {
