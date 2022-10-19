@@ -429,22 +429,30 @@ document.getElementById("graph-data").onclick = function(){
 	let successTHArray = [];
 	let targetnumArray = [];
 
-	for(j = 1; j < numgraphs + 1; j++) {
-		if (document.getElementById("num-dice-"+j).value == '' || document.getElementById("sides-dice-"+j).value == '') {
+	if (numgraphs > 0) {
+		document.getElementById("data-analyze").style.display = 'block';
+	}
+
+	
+
+	let graphInputs = document.getElementById('data-inputs').children;
+	for(let j = 1; j < numgraphs + 1; j++) {
+		if (graphInputs[j-1].children[0].children[1].value == '' || graphInputs[j-1].children[1].children[1].value == '' ) {
 			diceNumArray[j-1] = 0;
 			sidesArray[j-1] = 0;
 			successTHArray[j-1] = 0;
 			targetnumArray[j-1] = 0;
 		} else {
-		diceNumArray[j-1] = parseInt(document.getElementById("num-dice-"+j).value);
-		sidesArray[j-1] = parseInt(document.getElementById("sides-dice-"+j).value);
-		targetnumArray[j-1] = parseInt(document.getElementById("target-dice-"+j).value);
-		successTHArray[j-1] = parseInt(document.getElementById("success-dice-"+j).value);
+			diceNumArray[j-1] = parseInt(graphInputs[j-1].children[0].children[1].value);
+			sidesArray[j-1] = parseInt(graphInputs[j-1].children[1].children[1].value);
+			targetnumArray[j-1] = parseInt(graphInputs[j-1].children[3].children[1].value);
+			successTHArray[j-1] = parseInt(graphInputs[j-1].children[2].children[1].value);
 		}
-		if (document.getElementById("target-dice-"+j).value == '') {
+		if (graphInputs[j-1].children[3].children[1].value == '') {
 			targetnumArray[j-1] = Infinity;
 		}
 	}
+	
 	if (graphtype == "total") {
 		creategraph(diceNumArray, sidesArray, targetnumArray);
 	}
@@ -455,14 +463,14 @@ document.getElementById("graph-data").onclick = function(){
 
 document.getElementById("graph-type").addEventListener('change', (event) => {
 	if (event.target.value == 'successes' ) {
-		for (let i = 1; i < numgraphs + 1; i++) {
-			document.getElementById('success-section-' + i).style.display = "flex";
+		for (let i = 0; i < numgraphs ; i++) {
+			document.getElementById('data-inputs').children[i].children[2].style.display = "flex";
 		}
 		graphtype = "successes";
 	}
 	else if (event.target.value == 'total') {
-		for (let i = 1; i < numgraphs + 1; i++) {
-			document.getElementById('success-section-' + i).style.display = "none";
+		for (let i = 0; i < numgraphs; i++) {
+			document.getElementById('data-inputs').children[i].children[2].style.display = "none";
 		}
 		graphtype = "total";
 	}
@@ -471,109 +479,115 @@ document.getElementById("graph-type").addEventListener('change', (event) => {
 document.getElementById("add-graph").onclick = function(){
 	numgraphs += 1;
 	let newgraph = document.createElement('div');
-	let datadiv = document.getElementById("data-inputs");
-	let looparrayitems = ["num", "sides", "success", "target"];
-	let loopinnerHTML = ["Number of dice:", "How Many Sides:", "Success Threshold:", "Target Number:"];
-
-	//middiv.classList.add("namedatapair");
 
 	newgraph.id = "dataset-" + numgraphs;
 	newgraph.classList.add("datarow");
+	newgraph.setAttribute('data-index', numgraphs)
+	newgraph.innerHTML = `
+		<div class="namedatapair">
+			<label for="num-dice-${numgraphs}" class="numtext">Number of dice:</label>
+			<input type="number" class="number" id="num-dice-${numgraphs}" name="num-dice-${numgraphs}">
+		</div>
+		<div class="namedatapair">
+			<label for="sides-dice-${numgraphs}" class="numtext">How many sides:</label>
+			<input type="number" class="number" id="sides-dice-${numgraphs}" name="sides-dice-${numgraphs}">
+		</div>
+		<div class="namedatapair toggle-data" id="success-section-${numgraphs}" style="${graphtype == 'successes' ? "display: flex" : "display: none"}">
+			<label for="success-dice-${numgraphs}" class="numtext">Success Threshold:</label>
+			<input type="number" class="number" id="success-dice-${numgraphs}" name="success-dice-${numgraphs}">
+		</div>
+		<div class="namedatapair">
+			<label for="target-dice-${numgraphs}" class="numtext">Target Number:</label>
+			<input type="number" class="number" id="target-dice-${numgraphs}" name="target-dice-${numgraphs}">
+		</div>
+		<div class="drag-handle namedatapair" id="drag-dle-${numgraphs}" draggable="true"><span></span></div>
+	`
 
-	for (let i = 0; i < 4; i++) {
-		let middiv = document.createElement('div');
-		middiv.classList.add("namedatapair");
-		if (i == 2) {
-			middiv.classList.add("toggle-data");
-			middiv.id = "success-section-" + numgraphs;
-			if (graphtype == "successes") {
-				middiv.style.display = "flex";
-			} 
-		}
-
-		let numinput = document.createElement('input');
-		numinput.type = "number";
-		numinput.classList.add("number");
-		numinput.id = looparrayitems[i] + "-dice-" + numgraphs;
-		numinput.name = looparrayitems[i] + "-dice-" + numgraphs;
-
-		let subdivlabel = document.createElement('label');
-		subdivlabel.setAttribute("for", numinput.id);
-		subdivlabel.classList.add("numtext");
-		subdivlabel.innerHTML = loopinnerHTML[i];
-
-		middiv.appendChild(subdivlabel);
-		middiv.appendChild(numinput);
-
-		newgraph.appendChild(middiv);
-	}
 
 	let newAnalytics = document.createElement('p');
+
 	newAnalytics.classList.add('analysis-toggle');
 	newAnalytics.id = "data-analyze-" + numgraphs; 
 
 	let anaDiv = document.getElementById("data-analyze");
 	anaDiv.appendChild(newAnalytics);
-	/*numinput.type = "number";
-	numinput.classList.add("number");
-	numinput.id = "num-dice-" + numgraphs;
-	numinput.name = "num-dice-" + numgraphs;
-
-	subdivlabel.setAttribute("for", numinput.id);
-	subdivlabel.classList.add("numtext");
-	subdivlabel.innerHTML = "Number of dice:";
-
-	middiv.appendChild(subdivlabel);
-	middiv.appendChild(subdiv);
-
-	newgraph.appendChild(middiv);
-
-	middiv = document.createElement('div');
-	numinput = document.createElement('input');
-	subdivlabel = document.createElement('label');
-
-	middiv.classList.add("namedatapair");
-
-	numinput.type = "number";
-	numinput.classList.add("number");
-	numinput.id = "sides-dice-" + numgraphs;
-	numinput.name = "sides-dice-" + numgraphs;
-
-	subdivlabel.setAttribute("for", subdiv.id);
-	subdivlabel.classList.add("numtext");
-	subdivlabel.innerHTML = "How many sides:";
-
-	middiv.appendChild(subdivlabel);
-	middiv.appendChild(subdiv);
-
-	newgraph.appendChild(middiv);
-
-	---middiv = document.createElement('div');
-	subdiv = document.createElement('input');
-	subdivlabel = document.createElement('label');
-
-	middiv.classList.add("namedatapair");
-
-	subdiv.type = "number";
-	subdiv.classList.add("number");
-	subdiv.id = "total-dice-" + numgraphs;
-	subdiv.name = "total-dice-" + numgraphs;
-
-	subdivlabel.setAttribute("for", subdiv.id);
-	subdivlabel.classList.add("numtext");
-	subdivlabel.innerHTML = "Target number:";---
-
-	middiv.appendChild(subdivlabel);
-	middiv.appendChild(subdiv);
-
-	newgraph.appendChild(middiv);*/
-
+	let datadiv = document.getElementById("data-inputs");
 	datadiv.appendChild(newgraph);
+
+	let drag = document.getElementById('drag-dle-' + numgraphs);
+	addDragListeners(drag);
+	drag.addEventListener('dragstart', dragStart);
+	drag.addEventListener('dragover', dragOver);
+	drag.addEventListener('drop', dragDrop);
+	drag.addEventListener('dragEnter', dragEnter);
+	drag.addEventListener('dragleave', dragLeave);
 
 }
 
+function addDragListeners(dragEl) {
+	dragEl.addEventListener('dragstart', dragStart);
+	dragEl.addEventListener('dragover', dragOver);
+	dragEl.addEventListener('drop', dragDrop);
+	dragEl.addEventListener('dragEnter', dragEnter);
+	dragEl.addEventListener('dragleave', dragLeave);
+
+}
+
+const firstDrag = document.getElementById('drag-dle-1');
+addDragListeners(firstDrag);
+
+let dragStartNode, dragStartCopy, dragStartNum, dragStartData;
+
+function dragStart(ev) {
+	dragStartNode = this.parentNode;
+	for (let i = 0; i < 4; i++) {
+		dragStartNode.children[i].children[1].setAttribute("value", dragStartNode.children[i].children[1].value);
+	}
+	dragStartCopy = this.parentNode.outerHTML;
+	dragStartNum = this.parentNode.getAttribute('data-index');	
+	ev.dataTransfer.setData("text/html", this.parentNode.outerHTML);
+	ev.dataTransfer.setDragImage(this.parentNode, this.parentNode.clientWidth * .95, this.parentNode.clientHeight/2);
+}
+
+function dragOver(ev) {
+	ev.preventDefault();
+}
+
+function dragDrop() {
+	let dragEndNum = this.parentNode.getAttribute('data-index');
+	if(dragEndNum == dragStartNum) {
+		return;
+	}
+	let dragEndNode = this.parentNode;
+	for (let i = 0; i < 4; i++) {
+		dragEndNode.children[i].children[1].setAttribute("value", dragEndNode.children[i].children[1].value);
+	}
+	let dragEndCopy = this.parentNode.outerHTML;
+	
+
+	dragStartNode.outerHTML = dragEndCopy;
+	dragEndNode.outerHTML = dragStartCopy;
+
+	addDragListeners(document.getElementById('drag-dle-' + dragStartNum));
+	addDragListeners(document.getElementById('drag-dle-' + dragEndNum));
+
+}
+
+function dragEnter() {
+
+}
+
+function dragLeave() {
+
+}
+
+function swapNodes(nodeOne, nodeTwo) {
+	
+}
+
 document.getElementById("remove-graph").onclick = function() {
-	document.getElementById("dataset-" + numgraphs).remove();
+	let lastGraph = document.getElementById("data-inputs").children;
+	lastGraph[lastGraph.length - 1].remove();
 	document.getElementById("data-analyze-" + numgraphs).remove()
 	numgraphs -= 1;
 }

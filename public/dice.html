@@ -6,7 +6,7 @@
     <link rel="icon" href="images/logo.png">
     <link rel="stylesheet" href="css/dicestyle.css">
 
-    <!--Chart.js-->
+    <!--Chart.js and jquery-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!--dice scripting-->
@@ -41,45 +41,50 @@
             <p>In successes mode, the Success Threshold is a mandatory field that defines the value that any individual die must be at least equal to, for that die to count as a success.</p>
             </div>
         </div>
-        <div class="chartcontainer">
-            <canvas id="myChart"></canvas>
-        </div>
-        <div class="chart-analytics" id="data-analyze">
-            <p class="analysis-toggle"id="data-analyze-1"></p>
-        </div>
-        <div class="graph-options">
-            <select name="graph-type" id="graph-type">
-                <option value="total">Total</option>
-                <option value="successes">Successes</option>
-            </select>
-            <div id="data-inputs">
-                <div id="dataset-1" class="datarow">
-                    <div class="namedatapair">
-                        <label for="num-dice-1" class="numtext">Number of dice:</label>
-                        <input type="number" class="number" id="num-dice-1" name="num-dice-1">
-                    </div>
-                    <div class="namedatapair">
-                        <label for="sides-dice-1" class="numtext">How many sides:</label>
-                        <input type="number" class="number" id="sides-dice-1" name="sides-dice-1">
-                    </div>
-                    <div class="namedatapair toggle-data" id="success-section-1">
-                        <label for="success-dice-1" class="numtext">Success Threshold:</label>
-                        <input type="number" class="number" id="success-dice-1" name="success-dice-1">
-                    </div>
-                    <div class="namedatapair">
-                        <label for="target-dice-1" class="numtext">Target Number:</label>
-                        <input type="number" class="number" id="target-dice-1" name="target-dice-1">
-                    </div>
-                   
-
+        <div class="chart-area">
+            <div class="chart-left">
+                <div class="chartcontainer">
+                    <canvas id="myChart"></canvas>
+                </div>
+                <div class="chart-analytics" id="data-analyze">
+                    <p class="analysis-toggle"id="data-analyze-1"></p>
                 </div>
             </div>
-        </div>
-        <div class="mainbuttons">
-            <input type="button" class="graphbutton" value="Add Graph" id="add-graph" name="add-graph">
-            <input type="button" class="graphbutton" value="Remove Graph" id="remove-graph" name="remove-graph">
-            <input type="button" class="graphbutton" value="Plot Graphs" id="graph-data" name="graph-data">
-        </div>
+            <div class="chart-right">          
+                <div class="graph-options">
+                    <select name="graph-type" id="graph-type">
+                        <option value="total">Total</option>
+                        <option value="successes">Successes</option>
+                    </select>
+                    <div id="data-inputs">
+                        <div id="dataset-1" class="datarow" data-index="1">
+                            <div class="namedatapair">
+                                <label for="num-dice-1" class="numtext">Number of dice:</label>
+                                <input type="number" class="number" id="num-dice-1" name="num-dice-1" value="">
+                            </div>
+                            <div class="namedatapair">
+                                <label for="sides-dice-1" class="numtext">How many sides:</label>
+                                <input type="number" class="number" id="sides-dice-1" name="sides-dice-1" value="">
+                            </div>
+                            <div class="namedatapair toggle-data" id="success-section-1">
+                                <label for="success-dice-1" class="numtext">Success Threshold:</label>
+                                <input type="number" class="number" id="success-dice-1" name="success-dice-1" value="">
+                            </div>
+                            <div class="namedatapair">
+                                <label for="target-dice-1" class="numtext">Target Number:</label>
+                                <input type="number" class="number" id="target-dice-1" name="target-dice-1" value="">
+                            </div>
+                            <div class="drag-handle namedatapair" id="drag-dle-1" draggable="true"><span></span></div>
 
+                        </div>
+                    </div>
+                </div>
+                <div class="mainbuttons">
+                    <input type="button" class="graphbutton" value="Add Graph" id="add-graph" name="add-graph">
+                    <input type="button" class="graphbutton" value="Remove Graph" id="remove-graph" name="remove-graph">
+                    <input type="button" class="graphbutton" value="Plot Graphs" id="graph-data" name="graph-data">
+                </div>
+            </div>      
+        </div>
     </div>
 </body>
