@@ -19,7 +19,7 @@
 			</label>
 			<nav>
 				<ul>
-					<li><a class="fade_button" href="../index.html">Home</a></li>
+					<li><a class="fade_button" href="../home.html">Home</a></li>
 					<li><a class="fade_button" href="../projects.html">Projects</a></li>
 					<li><a class="fade_button" href="../contact.html">Contact</a></li>
 				</ul>
@@ -32,7 +32,6 @@
 				<p class="publish-date">Published: Sept. 23, 2022</p>
 			</div>
 			<p class="blogp">Hey! I'm Joseph Greene, aspiring front end developer, UX researcher, and Tabletop RPG designer. I graduated from UC Davis in 2021 with a Bachelor of Science in Psychology and a Minor in Computer Science. I decided to make this blog as a way to push myself a bit as both a web developer and a game designer. My current plan is to make blog posts that focus on different aspects of TTRPG game design, and to use those posts as a way of brainstorming and refining ideas for the TTRPG system that I'm currently designing.</p>
-
 			<p class="blogp">To give a bit of a backstory on some of the things I've done recently; shortly after graduating I was looking for a mid-sized programming project to work on. I had a good amount of programming knowledge from my Computer Science Minor, but I hadn't really created anything of my own outside of my coursework. Around the same time, I started playing in an online TTRPG game with some of my friends, playing Exalted 3rd edition using Roll20s VTT. Our group had a few issues with the provided character sheets for the system, and after learning that most of the game sheets on Roll20 were community created, I decided to try my hand at making one myself.  				
 				It was pretty tough at first; I'd never done any kind of web development at that point, so HTML and CSS were mostly foreign to me. I mainly learned by looking at the code for other systems' sheets, seeing what code correlated to elements on the page, and making small changes to see how it affected the sheet. After about a month of trial and error, I ended up with a sheet that I was happy with, and coordinating with the roll20 community team had the sheet added to the roll20 character sheet github as the official Exalted3e sheet.</p>
 			<figure class="blogimg">
@@ -41,7 +40,6 @@
 			</figure>
 			<p class="blogp">With the sheet released to the public, I immediately started seeing a lot of feedback on the roll20 forums. 
 				There were quite a few issues that I hadn't caught and other oversights that I had made when creating the sheets. Discussing the feedback with users on the forums gave me good ideas of how to fix the issues with my sheet, and I made updates to it for a couple of months after the initial release. I eventually stopped updating the sheet, mainly because my TTRPG group moved to using FoundryVTT instead of Roll20, but I think the process of creating and refining the Roll20 sheet gave me a lot of valuable experience.</p>
-
 			<p class="blogp">With a bit of web development experience under my belt, I decidied to push a bit more in that direction. I started with a basic website, just a home page showing an image and a bit of information about myself, and a contacts page. After a while I decided I wanted something a bit more refined for my home page, so instead of designing through HTML and CSS directly, I used figma to create a template for the homepage that I then adapted into code. 				
 				Wanting to delve a bit more into JavaScript, and as an avid TTRPG player and statistics enthusiast, I thought that a dice probability calculator would be a fun project. I went through a few iterations of the visualization part of the graph, initially using d3.js, but eventually landing on chart.js. As for the algorithm to actually calculate dice rolling probabilities, I initially used a formula I found in an interesting article that delves a bit into how to find an exact equation for modeling the probability of rolling n number of dice. You can read that article
 				<a href="https://towardsdatascience.com/modelling-the-probability-distributions-of-dice-b6ecf87b24ea">here</a>. Unfortunately that algorithm didn't end up working out for my use case, as when dealing with large numbers of dice and faces the large factorials in the equation ended up throwing off the results. I initially used some workarounds when dealing with those numbers, but I wasn't too happy with it, so I decided to try to find a completely accurate algorithm that worked with any inputs. I stumbled across a twitter post by the creator of AnyDice.com saying that they had used combinatorics to generate their dice rolling results. 

@@ -1,0 +1,235 @@
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+
+
+body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+
+.reveal-content {
+	position: absolute;
+	z-index: -2;
+	min-height: 100vw;
+	min-width: 100vh;
+	width: 100vw;
+	height: 100vh;
+	border-radius: 50%;
+	overflow: hidden;
+	opacity: 0;
+}
+
+.red-square {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.init-image {
+	height: 101vh;
+	width: 100vw;
+	object-fit: cover;
+	align-self: center;
+}
+
+.center-logo {
+	position: absolute;
+	background-color: #d9d9d900;
+	width: 100vw;
+	height: 100vh;
+	top: 5vh;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.click-text {
+	animation-name: flash-repeat;
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+	animation-fill-mode: forwards;
+	animation-timing-function: linear;
+}
+
+@keyframes flash-repeat {
+	0% {opacity: 1;}
+	50% {opacity: 0.1;}
+	100% {opacity: 1;}
+}
+
+canvas {
+	height: 100vh;
+	width: 100vw;
+}
+
+.leftside {
+	background-color: #F1F1F1;
+	width: 20vw;
+	position: absolute;
+	left: 0px;
+	min-width: 300px;
+	height: 100vh;
+	z-index: 5;
+	display: grid;
+	grid-template-rows: 15% 30% 33% 17% 5%;
+	animation-name: position-left;
+	animation-duration: 1s;
+}
+
+.rightside {
+	width: 80vw;
+	height: 100vh;
+	transition: 1.5s;	
+}
+
+
+@keyframes position-left {
+	from {transform: translateX(-100%);}
+	to {transform: translateX(0%);}
+	
+}
+
+.texttitle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.inlinks {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+}
+
+
+
+.sitelinks {
+	text-decoration: none;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    font-family: "Roboto Serif", Courier, monospace;
+	padding: 3%;
+    background-color: transparent;
+    transition: 700ms;
+    color:rgb(7, 7, 7);
+    border-color: transparent;
+    align-self: center;
+}
+
+.sitelinks:hover {
+    background-color: rgb(5, 5, 5);
+    mix-blend-mode: darken;
+    color: #f1f1f1;
+    text-shadow: none;
+    cursor: pointer;
+}
+
+.myinfo {
+	grid-row-start: 4;
+	background-color: #D9D9D9;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.headpic {
+	width: 30%;
+	padding: 5%;
+	object-fit: contain;
+	flex: 3;
+}
+
+.myinfotext {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.3rem;
+	flex: 5;
+}
+
+.outlinks {
+	margin-left: 0.5%;
+	grid-row-start: 5;
+	display: flex;
+	flex-direction: row;
+	justify-content: start;
+	align-items: center;
+}
+
+.outlink-button {
+	margin-right: 2%;
+	width: 2.2rem;
+	height: 2.2rem;
+	border-radius: 50%;
+	border: none;
+	background-size: cover;
+}
+
+.outlink-button:hover {
+	cursor: pointer;
+}
+
+
+.linkedin-button {
+	background-image: url("../public/images/linkedin.webp");
+}
+
+.twitter-button {
+	background-image: url("../public/images/twitter.webp");
+}
+
+.github-button {
+	background-image: url("../public/images/github.png");
+}
+
+@media screen and (max-width: 800px) {
+	.outlinks {
+		justify-content: center;
+	}
+	body {
+		display: block;
+		overflow: hidden;
+	}
+
+	.reveal-content {
+		justify-self: start;
+		left: calc(-50vh + 50vw);
+	}
+
+	.red-square {
+		justify-content: center;
+	}
+
+	.rightside {
+		position: absolute;
+		top: 0%;
+		left: 0%;
+		width: 100%;
+		background-size: contain;
+		z-index: 0;
+	}
+	.leftside {
+		position: absolute;
+		left: 10%;
+		width: 80%;
+		z-index: 10;
+	}
+
+	.final-image {
+		width: 100vw;
+	}
+}

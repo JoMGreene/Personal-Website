@@ -1,40 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<head>
 	<meta charset="UTF-8">
 	<title>JGDev</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<link rel="stylesheet" href="styles3.css">
+	<link rel="stylesheet" href="homepage.css">
 	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto+Serif" rel="stylesheet">
-	<script src=""></script>
+	
+</head>
 
-	<body>
-		<div class="leftside">
-			<div class="texttitle">
-			    <a href="https://jgreene.dev">
-				    <img src="./images/logoblack.png">
-                </a>
-            </div>
-			<div class="inlinks">
-				<a href="./index.html" class="sitelinks">Home</a>
-				<a href="./projects.html" class="sitelinks">Projects</a>
-				<a href="./contact.html" class="sitelinks">Contact</a>
-				<a href="./bloghome.html" class="sitelinks">Blog</a>
-			</div>
-			<div class="myinfo">
-				<img class="headpic" src="./images/headphoto.png">
-				<div class="myinfotext">
-					<p>Joseph Greene</p>
-					<p>Web Dev & UX</p>
-				</div>
-			</div>
-			<div class="outlinks">
-				<button class="linkedin-button outlink-button" onclick="location.href='https://www.linkedin.com/in/joseph-greene-253712215/'" type="button"></button>
-				<button class="twitter-button outlink-button" onclick="location.href='https://twitter.com/JosephG29455714'" type="button"></button>
-				<button class="github-button outlink-button" onclick="location.href='https://github.com/JoMGreene?tab=repositories'" type="button"></button>
-			</div>
+<body>
+	<div id="rev-con" class="reveal-content">
+		<div class="red-square">
+			<img class="init-image" src="images/bg.webp">
 		</div>
-		<div class="rightside">
-		</div>
-	</body>
+		
+	</div>
+	<div class="center-logo">
+		<img src="images/logoblack.png" alt="jgdev logo" class="init-logo">
+		<img src="images/click.png" alt="click to continue" class="click-text">
+	</div>
+
+	<script src="pixi.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/pixi-filters@latest/dist/pixi-filters.js"></script>
+	<script src="hompage.js">
+	</script>
+
+</body>
+
+
 </html>
