@@ -1,5 +1,5 @@
 body {
-    background-image: url("../images/bg.webp");
+    background-image: rgb(190, 190, 190);
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -11,12 +11,9 @@ body {
     color:aliceblue;
 }
 
-img, .mainrow {
-    box-shadow: 0px 4px 15px 0 rgba(0, 0, 0, 0.3), 0 15px 20px 0 rgba(0, 0, 0, 0.25);
-}
 
 a {
-    color:aqua;
+    color:rgb(0, 126, 126);
 }
 
 img.header-logo {
@@ -141,11 +138,13 @@ nav a {
     margin: 0%;
     display: flex;
     flex-direction: column;
+    gap: 5rem;
     width: 100%;
     height: auto;
     align-items: center;
     font-size: 20px;
     text-shadow: 1px 2px 4px rgba(19, 19, 19, 0.4);
+    box-shadow: 0px 4px 15px 0 rgba(0, 0, 0, 0.3), 0 15px 20px 0 rgba(0, 0, 0, 0.25);
 }
 
 .mainrow {
@@ -155,27 +154,15 @@ nav a {
     flex-direction: column;
     text-align: center;
     background-color:transparent;
-    color:#EAE2B7;
-    transition: background-color 500ms;
-    opacity: 0;
-    transition: opacity 500ms ease-in-out;
-    margin-top: 1%;
+    color:#080808;
     justify-content: flex-start;
+    
 }
 
-.mainrow.row0 {
-    height: 100vh;
-    box-shadow: none;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-}
 .centertext {
     font-weight: bold;
     font-size: 5rem;
-    color: rgb(247, 242, 230);
+    color: rgb(8, 8, 8);
     -webkit-text-stroke: 1px black;
     text-shadow: 4px 4px 8px rgba(185, 185, 185, 0.4);
 
@@ -184,6 +171,7 @@ nav a {
 .spacer {
     height: 30vh;
 }
+
 
 .scroll-offscreen {
     opacity: 1;
@@ -212,25 +200,48 @@ nav a {
     margin-top: 5%    
 }
 
-
+.top-row {
+    margin-top: 10vh;
+}
 .tiletitle {
-    margin-left: 10vw;
-    margin-right: 10vw;
-    font-size: 2.7rem;
-    font-family: "Playfair Display", Courier, monospace;
+    font-size: 2rem;
+    font-family: "Roboto Serif", Courier, monospace;
     text-align: left;
+    width: 90%;
+    background-color: black;
+    color:rgb(190, 190, 190);
+    border-radius: 3px;
+    align-self: flex-start;
+    padding: 4px;
+    margin-block: 6px;
 }
 
 
+.tile-link {
+    font-size: 1.3rem;
+    font-family: "Roboto Serif", Courier, monospace;
+    display: flex;
+    flex-direction: row;
+    height: 1.3rem;
+    align-self: flex-start;
+}
+
 
 .tiletext{
-    width: fit-content;
+    width: 100%;
     align-self: center;
     margin-left: 10vw;
     margin-right: 10vw;
     font-family: "Roboto Serif", Courier, monospace;
     text-align: left;
 }
+
+.link-text, .linkrow{
+    margin: 0;
+    line-height: 1.5rem;
+    align-self: flex-start;
+}
+
 
 
 .js-scroll.scrolled{
@@ -333,6 +344,9 @@ nav a {
         height: auto;
         width: 80%;
         margin-top: 0;
+    }
+    .tiletitle {
+        width: 60%;
     }
     .rowtext, .rowtexthead, .rowpicture {
         margin-left: 8vw;

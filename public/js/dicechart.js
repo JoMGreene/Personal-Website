@@ -56,75 +56,21 @@ let myChart = new Chart(ctx, {
 });
 Chart.defaults.font.size = 14;
 
-//simple factorial calculator function
-function factorial(num) {
-	if (num == 0 || num == 1) {
-		return 1;
-	}
-	if (num < 0) {
-		return 0;
-	}
-	let result = num;
-
-	while(num > 1) {
-		num--;
-		result *= num;
-	}
-	return result;
-}
-
-//function to return the probability of a number 'total' being  the result on a dice roll of (dice)d(sides), assuming the distribution is normal.
-function stdprob(dice, sides, total) {
-	let mean = dice * (sides + 1) / 2;
-	let standdev = Math.sqrt(dice * ((sides**2) - 1) / 12);
-	let res = (1/(standdev * Math.sqrt(2 * Math.PI))) * (Math.E**((-1/2)*(((total - mean) / standdev)**2)));
-	return res;
-}
-
-//function to calculate the exact probability that 'total' is the result on a dice roll of (dice)d(sides). Will not work with high 'total' due to the factorials becoming too large.
-function pointProbability(dice,sides,total) {
-	let res = 0
-	for (let k = 0; k < parseInt(((total-dice)/sides) + 1); k++) {
-		let first_term = factorial(dice) / (factorial(k)*factorial(dice-k));
-		let second_term = 	factorial(total - sides*k - 1) / (factorial(total - sides*k - dice) * factorial(dice - 1));
-		let misc_term = ((-1)**k) * ((1 / sides)**dice);
-		res += (first_term * second_term * misc_term);
-	}
-	return res;
-}
-
-function probabilityDistribution(dice,sides) {
-	const probDist = [];
-
-	let numsteps = Math.sqrt(dice*sides);
-	//checklist: if dice > 20 do stdprob for whole thing, if total - sides*k - dice > 100 do stdprob for that value, if dice * sides > 100 do fewer step evaluations
-	if (dice*sides > 150) {
-		for (let i = 0; i < numsteps; i++) {
-			probDist[i] = stdprob(dice,sides,Math.floor(i*numsteps));
-		}
-		probDist[numsteps] = stdprob(dice,sides,dice*sides);
-		return probDist;
-	}
-	for (let i = dice; i < dice*sides + 1; i++) {
-		probDist[i] = pointProbability(dice,sides,i);
-		if (probDist[i] == undefined) {
-			probDist[i] = null;
-		}
-	}
-
-	return probDist;
-}
-
+//function to create the graph for the successes-based dice roll option. Takes the number of dice, sides on a die, optional target number to beat, the threshold value for a single die to count as a success, and threshold for a die to count as two successes(not yet implemented)
 function successesProbabilityDistribution(dice, sides, targetnums, successTH, doublesTH) {
 	let templateDist = [];
 	let targetprob = 0;
 	let meanTracker = 0;
+
+	//catches input conditions that would cause the graph calculation to fail, returning 0s 
 	if (dice == 0 || sides == 0 || isNaN(successTH)) {
 		return[[0], 0, 0, 0];
 	}
+	//if the successes threshold is set higher than the number of sides, make it equal to the number of sides. having an impossible success threshold doesn't make much sense, so we set it to the max value on the die
 	if (successTH > sides) {
 		successTH = sides;
 	}
+	//set up the initial array that we're going to use to emulate each die rolled. if doubles are enabled, there are 3 outcomes per die: failure, success, or double success. if doubles are disabled, the only outcomes on a die are success or failure.
 	if (doublesTH != 0) {
 		templateDist = [(successTH - 1) / sides, (doublesTH - successTH) / sides, (sides - doublesTH) / sides];
 	}else {
@@ -133,6 +79,7 @@ function successesProbabilityDistribution(dice, sides, targetnums, successTH, do
 
 	let probDist = templateDist.slice(0);
 
+	//this generates the final probability distribution. we start with a copy of the template distribution, which has the probabilities of each outcome for one die. We then take the dot product of the current array with the tempalate array a number of times equal to the number of dice that are being rolled, to find the probabilities of each number of successes.
 	for (let d = 1; d < dice; d++) {
 		const probDistTemp = [];
 		probDistTemp.length = (templateDist.length + probDist.length) - 1;
@@ -146,6 +93,7 @@ function successesProbabilityDistribution(dice, sides, targetnums, successTH, do
 		probDist = probDistTemp.slice(0);
 	}
 
+	//turning our raw data output into a format that is more useable for formatting in d3.js, also making use of the fact that we iterate though each item in the original array to calculate the mean result.
 	let formatprobDist = [];
 	for (let z = 0; z < probDist.length; z++) {
 		formatprobDist.push({x: z, y: probDist[z]});
@@ -154,11 +102,13 @@ function successesProbabilityDistribution(dice, sides, targetnums, successTH, do
 			targetprob += probDist[z];
 		}
 	}
+
+	//have to go back through to calculate the standard deviation, because we didn't know the mean until now.
 	let workingStdDev = 0;
 	for (let y = 0; y < formatprobDist.length; y++) {
 		workingStdDev += formatprobDist[y].y * ((formatprobDist[y].x - meanTracker)**2);
 	}
-
+	//if rounding issues cause the total probability of getting a result to be greater than one, we set it to approimately 1 because we know the real probability is extremely close to 1
 	if (targetprob > 1) {
 		targetprob = "≈1";
 	}
@@ -166,12 +116,14 @@ function successesProbabilityDistribution(dice, sides, targetnums, successTH, do
 
 }
 
-
+//mostly the same as the previous function, but this time for a dice total roll 
 function probabilityDistributionFormatted(dice,sides,target) {
 	const probDist = [];	
 	let targetprob = 0;
 	let meanTracker = 0;
+	//our initial array this time is an array of 1's, because each result on a single die has the same probability, and it's better to use integers now and convert the final array to decimals so we don't have a bunch of rounding errors while calculating.
 	let baseArray = Array(sides).fill(1);
+	//we use combinatorics to generate the arrays for each additional die
 	for (let i = 0; i < dice-1; i++) {
 		let resArray = [];
 		let j = 0;
@@ -199,6 +151,8 @@ function probabilityDistributionFormatted(dice,sides,target) {
 		baseArray.length = resArray.length;
 		baseArray = resArray.slice(0);
 	}
+
+	//formatting and caluclate mean again
 	let formattedArray = [];
 	for (let z = 0; z < baseArray.length; z++) {
 		let pointProb = baseArray[z] / sides**dice;
@@ -208,68 +162,30 @@ function probabilityDistributionFormatted(dice,sides,target) {
 			targetprob += baseArray[z];
 		}		
 	}
+	//calcuate standard deviation. 
 	let workingStdDev = 0;
 	for (let y = 0; y < formattedArray.length; y++) {
 		workingStdDev += formattedArray[y].y * ((formattedArray[y].x - meanTracker)**2);
 	}
 	workingStdDev = Math.sqrt(workingStdDev);
+
+	//dont have to worry about rounding this time, as we're still dealing with integers until this division, so the numerator cannot be larger than the denominator due to rounding.
 	targetprob /= sides**dice;
 	return [formattedArray, targetprob, meanTracker, workingStdDev];
 	
 }
 
-/*function probabilityDistributionFormattedTarget(dice,sides,targetnums) {	
-	const probDist = [];
-	let targetprob = 0;
-	//check if standard probability needs to be used in place of the more accurate equation, and build the dataset accordingly
-	if (dice*sides > 150 || dice > 20) {
-		for (let i = dice; i < dice*sides + 1; i++) {
-			if (i - 1 > 170) {
-				let pointnum = stdprob(dice, sides, i)
-				probDist.push({x: i, y: pointnum}); 
-				if (i > targetnums - 1) {
-					targetprob += pointnum;
-				}
-			}
-			else {
-				let pointnum = pointProbability(dice, sides, i)
-				probDist.push({x: i, y: pointnum});
-				if (i > targetnums - 1) {
-					targetprob += pointnum;
-				}
-			}
-
-		}
-		return [probDist, targetprob];
-	}
-
-	for (let k = dice; k < dice*sides + 1; k++) {
-		let pointnum = pointProbability(dice,sides,k);
-		probDist.push({x: k, y: pointnum})
-		if (k > targetnums - 1) {
-			targetprob += pointnum;
-		}
-	}
-	if (targetprob > 1) {
-		targetprob = "≈1";
-	}
-	return [probDist, targetprob];
-}*/
-
+//function to determine whether a specified x-axis value is less than the target number for that graph, used for coloring line segments on the graph
 const succeed = (ctx, value, target) => ctx.p0.parsed.x > (target - 1) ? value : undefined;
 
 //main function, calls other functions to create arrays of data, then adds them to the graph as datasets.
 function creategraph(dice, sides, targetnums) {
-	let plottedGraphs = 0;
 	let highestX = 0;
 	let targetResult = 0;
 	let meanRes = 0;
 	let stdDevRes = 0;
 	let probDistResult = [];
 	for (k = 0; k < dice.length; k++) {
-		/*if (dice[k] == 0 || sides[k] == 0 || targetnums[k] == 0) {
-			continue;
-		}*/
 		[probDistResult, targetResult, meanRes, stdDevRes]  = probabilityDistributionFormatted(dice[k], sides[k], targetnums[k]);
 		const targetnumcurrent = targetnums[k];
 		const loopval = k;
@@ -326,7 +242,6 @@ function creategraph(dice, sides, targetnums) {
 			}
 		} else {
 			document.getElementById('data-analyze-' + (k+1)).style.display = "none";
-			//document.getElementById('data-anaylze-' + (k+1)).innerHTML = "";
 		}
 
 		if (dice[k] * sides[k] > highestX) {
@@ -406,7 +321,6 @@ function creategraphsuccesses(dice, sides, successTHs, targetnums) {
 			}
 		} else {
 			document.getElementById('data-analyze-' + (k+1)).style.display = "none";
-			//document.getElementById('data-anaylze-' + (k+1)).innerHTML = "";
 		}
 	}
 	myChart.options.scales.x.min = 0;
@@ -461,6 +375,8 @@ document.getElementById("graph-data").onclick = function(){
 	}
 }
 
+
+//when type of graph gets changed, we make sure to show or hide the relevant inputs, and change the graphtype variable so the graph function knows what type of graphs to generate
 document.getElementById("graph-type").addEventListener('change', (event) => {
 	if (event.target.value == 'successes' ) {
 		for (let i = 0; i < numgraphs ; i++) {
@@ -476,6 +392,8 @@ document.getElementById("graph-type").addEventListener('change', (event) => {
 	}
 });
 
+
+//function to create a set of graph inputs. creates and appends the child node, and adds the drag and drop event linsteners to it
 document.getElementById("add-graph").onclick = function(){
 	numgraphs += 1;
 	let newgraph = document.createElement('div');

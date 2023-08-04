@@ -3,7 +3,7 @@ const inner = document.querySelector(".red-square");
 const initLogo = document.querySelector(".center-logo");
 var newFrame = 1;
 
-const easing = 0.006;
+const easing = 0.01;
 const outScale = 0.01;
 const inScale = 1.5;
 let currOpacity = 0;
@@ -24,7 +24,7 @@ function update() {
 	elementScale += (targetScale - elementScale) * easing;
 	innerScale = 1 / elementScale;
 
-	if(targetScale - elementScale < 0.1) {
+	if(targetScale - elementScale < 0.05) {
 		elementScale = targetScale;
 		innerScale = 1 / elementScale;
 
@@ -48,7 +48,7 @@ const app = new PIXI.Application({width: window.innerWidth, height: window.inner
 
 document.body.appendChild(app.view);
 
-const bg = PIXI.Sprite.from('images/testbg.jpg');
+const bg = PIXI.Sprite.from('images/testbg3.jpg');
 bg.width = app.screen.width;
 bg.height = app.screen.height;
 bg.zIndex = 2;
@@ -110,7 +110,7 @@ async function startAnim() {
 	const revealImage = document.querySelector(".reveal-content");
 	initLogo.style.zIndex = 4;
 	revealImage.style.zIndex = 3;
-	setTimeout(function() {removeCoverImage()}, 4200);
+	setTimeout(function() {removeCoverImage()}, 3100);
 }
 
 function removeCoverImage() {
